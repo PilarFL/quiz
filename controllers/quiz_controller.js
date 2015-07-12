@@ -10,3 +10,7 @@
         res.render('quizes/answer',{respuesta: 'Incorrecto'} );
         }
   };
+  //GET /quizes/autor
+  exports.autor = function(req,res){
+      res.render('quizes/autor');
+  };
