@@ -12,5 +12,5 @@
   };
   //GET /quizes/autor
   exports.autor = function(req,res){
-      res.render('quizes/autor');
+      res.render('autor');
   };
