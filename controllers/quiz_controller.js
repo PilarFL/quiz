@@ -13,12 +13,25 @@
  };
 
   //GET /quizes
+  //****Modificado para Busqueda de las preguntas************
+
   exports.index = function(req,res){
-    models.Quiz.findAll().then(function (quizes){
-      res.render('quizes/index.ejs',{ quizes: quizes});
+    //miro si se envia la query en la operación GET
+    if (req.query.search) { //realizamos la búsqueda
+      models.Quiz.findAll({where:
+                  ["pregunta like ?","%"+req.query.search.replace(/ /g,"%")+"%"],
+                  order: 'pregunta ASC'}).then(function(quizes) {
+                        res.render('quizes/index.ejs', { quizes: quizes});
+                      }).catch(function(error) { next(error);});
+    } else {
+      //si no hay busqueda de preguntas se envían a la página todas las preguntas disponibles
+      models.Quiz.findAll().then(function (quizes){
+        res.render('quizes/index.ejs',{ quizes: quizes});
+        }
+      ).catch(function(error) { next(error);})
     }
-  ).catch(function(error) { next(error);})
   } ;
+
 
   //GET /quizes/:id
   exports.show = function(req,res){
@@ -29,14 +42,14 @@
 
   //GET /quizes/:id/answer
   exports.answer = function(req, res) {
-  var resultado = 'Incorrecto';
-  if (req.query.respuesta === req.quiz.respuesta) {
-    resultado = 'Correcto';
-  }
-  res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado});
-};
+    var resultado = 'Incorrecto';
+    if (req.query.respuesta === req.quiz.respuesta) {
+      resultado = 'Correcto';
+      }
+    res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado});
+  };
 
   //GET /quizes/autor
   exports.autor = function(req,res){
       res.render('autor');
-  };
+    };
