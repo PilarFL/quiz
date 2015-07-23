@@ -78,5 +78,28 @@
         .save({fields:["pregunta","respuesta"]})
         .then(function(){ res.redirect('/quizes')})
       }
-
     };
+
+  //GET /quizes/:id/edit
+  exports.edit = function(req, res) {
+    var quiz = req.quiz; //autoload de instancia de quiz
+    res.render('quizes/edit', {quiz: quiz, errors: []});
+  };
+
+  //PUT /quizes/:id
+  exports.update = function (req, res) {
+    req.quiz.pregunta = req.body.quiz.pregunta;
+    req.quiz.respuesta = req.body.quiz.respuesta;
+    //hago la validación como en POST, de forma diferente a las transparencias
+    var errors = req.quiz.validate();
+    if (errors){
+      var i=0;
+      var errores = new Array();
+      for (var prop in errors) errores[i++]={message: errors[prop]};
+        res.render('quizes/edit', {quiz: req.quiz, errors: errores});
+    } else{
+          req.quiz  //save: guarda campos pregunta y respuesta en DB
+          .save ({fields: ["pregunta", "respuesta"]})
+          .then ( function (){ res.redirect('/quizes');});
+    } // Redirección HTTP a la lista de preguntas (URL realtivo)
+  };
