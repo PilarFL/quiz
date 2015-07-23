@@ -103,3 +103,11 @@
           .then ( function (){ res.redirect('/quizes');});
     } // Redirección HTTP a la lista de preguntas (URL realtivo)
   };
+
+  //DELETE /quizes/:id
+  exports.destroy = function (req, res) {
+    console.log('Quiz es: ' + req.quiz +' y vale:' + req.quiz.pregunta);
+    req.quiz.destroy().then(function(){
+      res.redirect('/quizes');
+    }).catch(function(error){next(error)});
+  };
