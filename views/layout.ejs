@@ -13,7 +13,7 @@
 </head>
 
 <body>
-  <div id='page-wrap'>
+  <div id="page-wrap">
     <header class="main" id="h1">
       <h1> Quiz: El juego de las preguntas </h1>
     </header>
@@ -25,10 +25,19 @@
     </nav>
 
     <section  class="main" id="s1">
+      <% if (errors.length) { %>
+          <span id='ErrorMsgs'>
+            Corregir errores:<br/>
+            <% for (var i in errors) { %>
+                <span> <%= errors[i].message %> </span><br/>
+            <% } %>
+          </span>
+      <% } %>
       <div> <%-body %></div>
     </section>
-</div>
-<div>
+
+  </div>
+  <div>
     <footer  class="main" id="f1">
       <a href="http://wikipedia.org/wiki/Quiz">¿Qué es un QUIZ?</a>
       <p>Posted by: Pilar Ferrer</p>
