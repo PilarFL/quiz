@@ -4,7 +4,7 @@
  exports.load = function(req, res, next, quizId) {
    models.Quiz.find(quizId).then(
      function(quiz) {
-       if (quiz) {
+         if (quiz) {
          req.quiz = quiz;
          next();
        } else { next(new Error('No existe quizId=' + quizId)); }
@@ -55,15 +55,16 @@
 
   //GET /quizes/new
   exports.new = function(req,res){
-      var quiz = models.Quiz.build(// crea objeto quiz
-          {pregunta: "Pregunta", respuesta: "Respuesta"}
-      );
+      var quiz = models.Quiz.build( { pregunta: "Pregunta",
+                                      respuesta: "Respuesta",
+                                      tema: "Otros"});  // crea objeto quiz
       res.render('quizes/new', {quiz: quiz, errors: []});
   };
 
   //POST /quizes/create
   exports.create = function(req,res) {
       var quiz = models.Quiz.build( req.body.quiz );
+      //crea una pregunta con los datos recogidos en la página web
       //quiz.validate() es null por lo que no se puede obtener .then()
       var errors = quiz.validate();
       if (errors){
@@ -75,7 +76,7 @@
         //Se renderiza la página quizes/new con la variable errors como array
       }else{ //No hay errores
         quiz // guarda en la DB los campos pregunta y respuesta de quiz
-        .save({fields:["pregunta","respuesta"]})
+        .save({fields:["pregunta","respuesta","tema"]})
         .then(function(){ res.redirect('/quizes')})
       }
     };
@@ -90,6 +91,7 @@
   exports.update = function (req, res) {
     req.quiz.pregunta = req.body.quiz.pregunta;
     req.quiz.respuesta = req.body.quiz.respuesta;
+    req.quiz.tema = req.body.quiz.tema;
     //hago la validación como en POST, de forma diferente a las transparencias
     var errors = req.quiz.validate();
     if (errors){
@@ -99,14 +101,13 @@
         res.render('quizes/edit', {quiz: req.quiz, errors: errores});
     } else{
           req.quiz  //save: guarda campos pregunta y respuesta en DB
-          .save ({fields: ["pregunta", "respuesta"]})
+          .save ({fields: ["pregunta", "respuesta","tema"]})
           .then ( function (){ res.redirect('/quizes');});
     } // Redirección HTTP a la lista de preguntas (URL realtivo)
   };
 
   //DELETE /quizes/:id
   exports.destroy = function (req, res) {
-    console.log('Quiz es: ' + req.quiz +' y vale:' + req.quiz.pregunta);
     req.quiz.destroy().then(function(){
       res.redirect('/quizes');
     }).catch(function(error){next(error)});
