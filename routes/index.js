@@ -4,14 +4,20 @@ var router = express.Router();
 /*Importar quiz_controller.js*/
 var quizController =require('../controllers/quiz_controller');
 var commentController =require('../controllers/comment_controller');
+var sessionController = require('../controllers/session_controller');
 
-/* GET home page. */
+/* Página de entrada --> GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Quiz' , errors: []});
 });
 
 //Autoload de comandos con :quidId
 router.param('quizId', quizController.load);  // autoload :quizId
+
+//Definicion de rutas de sesion
+router.get('/login',sessionController.new);       // formulario login
+router.post('/login',sessionController.create);   // crear sesión
+router.get('/logout',sessionController.destroy);  // destruir sesión
 
 /*Definición de rutas de /quizes*/
 router.get('/quizes',                       quizController.index);
