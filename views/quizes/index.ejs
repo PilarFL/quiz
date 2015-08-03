@@ -18,14 +18,22 @@
       <% if (session.user) { %>
           <td> <a href="quizes/<%= quizes[i].id %>/edit"><button>editar</button></a></td>
           <td> <form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
-               <button type="submit" onClick="return confirm('Borrar:<%= quizes[i].pregunta %>');">
+               <button type="submit" onClick="return confirm('Borrar:  <%= quizes[i].pregunta %>');">
                   borrar
                </button> </form> </td>
       <% } %>
     </tr>
   <% } %>
 </table>
+<br/>
+
 <% if (session.user) { %>
     <p><a href="/quizes/new"><button type="button">Crear pregunta</button></a>
 <% } %>
 </p></div>
+<% if (session.timeout) {
+    session.timeout = false;  %>
+    <script>
+       alert('  SESION EXPIRADA. Registrese nuevamente para continuar o seguir como invitado. ');
+    </script>
+<% } %>

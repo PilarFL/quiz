@@ -21,20 +21,20 @@ router.post('/login',sessionController.create);   // crear sesión
 router.get('/logout',sessionController.destroy);  // destruir sesión
 
 /*Definición de rutas de /quizes*/
-router.get('/quizes',                       quizController.index);
-router.get('/quizes/:quizId(\\d+)',         quizController.show);
-router.get('/quizes/:quizId(\\d+)/answer',  quizController.answer);
-router.get('/autor',                        quizController.autor);
-router.get('/quizes/new',                   sessionController.loginRequired,  quizController.new);
-router.post('/quizes/create',               sessionController.loginRequired,  quizController.create);
-router.get('/quizes/:quizId(\\d+)/edit',    sessionController.loginRequired,  quizController.edit);
-router.put('/quizes/:quizId(\\d+)',         sessionController.loginRequired,  quizController.update);
-router.delete('/quizes/:quizId(\\d+)',      sessionController.loginRequired,  quizController.destroy);
+router.get('/quizes',                       sessionController.autoLogout, quizController.index);
+router.get('/quizes/:quizId(\\d+)',         sessionController.autoLogout, quizController.show);
+router.get('/quizes/:quizId(\\d+)/answer',  sessionController.autoLogout, quizController.answer);
+router.get('/autor',                        sessionController.autoLogout, quizController.autor);
+router.get('/quizes/new',                   sessionController.loginRequired,  sessionController.autoLogout, quizController.new);
+router.post('/quizes/create',               sessionController.loginRequired,  sessionController.autoLogout, quizController.create);
+router.get('/quizes/:quizId(\\d+)/edit',    sessionController.loginRequired,  sessionController.autoLogout, quizController.edit);
+router.put('/quizes/:quizId(\\d+)',         sessionController.loginRequired,  sessionController.autoLogout, quizController.update);
+router.delete('/quizes/:quizId(\\d+)',      sessionController.loginRequired,  sessionController.autoLogout, quizController.destroy);
 
 //Definición de rutas de comentarios
-router.get('/quizes/:quizId(\\d+)/comments/new',   commentController.new);
-router.post('/quizes/:quizId(\\d+)/comments',   commentController.create);
+router.get('/quizes/:quizId(\\d+)/comments/new', sessionController.autoLogout, commentController.new);
+router.post('/quizes/:quizId(\\d+)/comments',    sessionController.autoLogout, commentController.create);
 router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish',
-              sessionController.loginRequired, commentController.publish);
+              sessionController.loginRequired, sessionController.autoLogout, commentController.publish);
 
 module.exports = router;

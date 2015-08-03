@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var partials = require('express-partials');
 var methodOverride = require('method-override');
 var session = require('express-session');
+//var tiempo = new Date().getTime();
 
 var routes = require('./routes/index');
 
@@ -31,10 +32,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Helpers dinámicos:
 app.use(function(req, res, next){
-  //guardar path en session.redir para despues de login
+
+  //TRANSACCION DE SESIÓN: guardar path en session.redir para despues de login
+  // No se guardará el path que se recibe, depende del método usado
   if(!req.path.match(/\/login|\/logout/)) {
-    req.session.redir = req.path;
+    if ((req.path == "/quizes/create") || (req.path.match(/\/quizes\/(\d+)/)!=null)) {
+           req.session.redir = "/quizes";
+        } else { // en otro caso se guarda el path que se recibe
+          req.session.redir = req.path;
+        }
+    //SESIÓN REGISTRADA, contabilizo el tiempo para compararlo con el inicial
+    if (req.session.user)  req.session.tiempo = new Date().getTime();
   }
+
+  //INICIO DE SESIÓN: guardar el tiempo en el objeto req al iniciar la session
+  if(req.path.match(/login/)) {
+    //almacenamos el tiempo en milisegundos desde enero de 1070. ¡Toma ya!
+    req.session.tiempoIni = new Date().getTime();
+    req.session.timeout = false;
+  };
+
   //Hacer visible req.session en las vistas
   res.locals.session = req.session;
   next();

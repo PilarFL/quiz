@@ -1,8 +1,17 @@
-<label for="preg" class="rem">Pregunta:</label>
-<input type="text" id="preg" name="quiz[pregunta]" value="<%= quiz.pregunta %>" />
-<p>
-<label for="resp" class="rem">Respuesta:</label>
-<input type="text" id="resp" name="quiz[respuesta]" value="<%= quiz.respuesta %>" />
+
+<% //si se está creando una pregunta nueva no relleno por defecto los campos
+ if (quiz.pregunta =='Pregunta'){ %>
+    <label for="preg" class="rem">Pregunta:</label>
+    <input type="text" id="preg" name="quiz[pregunta]" placeholder="<%= quiz.pregunta %>" /><p>
+    <label for="resp" class="rem">Respuesta:</label>
+    <input type="text" id="resp" name="quiz[respuesta]" placeholder="<%= quiz.respuesta %>" />
+ <% } else{ %>
+    <label for="preg" class="rem">Pregunta:</label>
+    <input type="text" id="preg" name="quiz[pregunta]" value="<%= quiz.pregunta %>" /><p>
+    <label for="resp" class="rem">Respuesta:</label>
+    <input type="text" id="resp" name="quiz[respuesta]" value="<%= quiz.respuesta %>" />
+ <% } %>
+
 <p><br/>
 
 <label for="tematica" class="rem">Tema:</label>

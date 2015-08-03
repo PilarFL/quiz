@@ -25,7 +25,7 @@
                         res.render('quizes/index.ejs', { quizes: quizes, errors: []});
                       }).catch(function(error) { next(error);});
     } else {
-      //si no hay busqueda de preguntas, todas se envían a la página todas las preguntas disponibles
+      //si no hay busqueda de preguntas, se envían todas las preguntas disponibles
       models.Quiz.findAll().then(function (quizes){
         res.render('quizes/index.ejs',{ quizes: quizes, errors: []});
         }

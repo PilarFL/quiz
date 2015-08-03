@@ -8,6 +8,11 @@ var options = {
   key: fs.readFileSync('certs/quiz-2015-pfl-key.pem').toString(),
   cert: fs.readFileSync('certs/quiz-2015-pfl-cert.pem').toString()
 };
+
+var options = {
+  key: fs.readFileSync('certs/quiz-2015-pfl-key.pem').toString(),
+  cert: fs.readFileSync('certs/quiz-2015-pfl-cert.pem').toString()
+};
 app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
