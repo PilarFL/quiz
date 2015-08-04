@@ -5,6 +5,7 @@ var router = express.Router();
 var quizController =require('../controllers/quiz_controller');
 var commentController =require('../controllers/comment_controller');
 var sessionController = require('../controllers/session_controller');
+var estadisticaController = require('../controllers/estadistica_controller');
 
 /* Página de entrada --> GET home page. */
 router.get('/', function(req, res) {
@@ -36,5 +37,8 @@ router.get('/quizes/:quizId(\\d+)/comments/new', sessionController.autoLogout, c
 router.post('/quizes/:quizId(\\d+)/comments',    sessionController.autoLogout, commentController.create);
 router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish',
               sessionController.loginRequired, sessionController.autoLogout, commentController.publish);
+
+//Definicion de ruta de las estadisticas
+router.get('/quizes/estadisticas',          sessionController.autoLogout, estadisticaController.estadistico);
 
 module.exports = router;

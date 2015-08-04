@@ -36,8 +36,11 @@ var Comment = sequelize.import(path.join(__dirname,'comment'));
 Comment.belongsTo(Quiz); // Un comentario está asociado a una única pregunta
 Quiz.hasMany(Comment);  //Relación 1:N, una pregunta puede tener varios Comentarios
 
-exports.Quiz = Quiz; //exportar definición de la tabla Quiz
+//exportar definición de las tablas Quiz y Comments.
+exports.Quiz = Quiz;
 exports.Comment = Comment;
+//exportar definición del gestor de la DB
+exports.sequelize = sequelize;
 
 //sequelize.sync() crea e inicializa tabla de preguntas en BD
 sequelize.sync().then(function(){
